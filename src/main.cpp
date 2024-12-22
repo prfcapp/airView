@@ -75,9 +75,9 @@ void loop() {
 
   u8g2.firstPage();
   do {
-    u8g2.setFont(u8g2_font_ncenB12_tr);
-    u8g2.drawStr(25,13,"AirView");
-    
+    u8g2.setFont(u8g2_font_ncenB10_tr);
+    //u8g2.drawStr(25,13,"AirView");
+    u8g2.drawButtonUTF8(28, 16, U8G2_BTN_BW2, 0,  2,  2, "airviewer" );
     u8g2.setFont(u8g2_font_ncenB08_tr);
 
     ///////////////////////////////////////////////////////
@@ -93,35 +93,37 @@ void loop() {
     
 
     // left column
-    u8g2.setCursor(3, 30);
-    u8g2.print("PPM:");
-    u8g2.setCursor(35, 30);
+    u8g2.setCursor(3, 36);
+    u8g2.print("CO2:");
+    u8g2.setCursor(35, 36);
     u8g2.print(ccs.geteCO2());
     Serial.println("CO2: ");
     Serial.println(ccs.geteCO2());
-    u8g2.setCursor(3, 45);
-    u8g2.print("TVOC:");
-    u8g2.setCursor(40, 45);
+    u8g2.setCursor(3, 51);
+    u8g2.print("tvoc:");
+    u8g2.setCursor(40, 51);
     u8g2.print(ccs.getTVOC());
     Serial.println("TVOC: ");
     Serial.println(ccs.getTVOC());
 
     // right column
-    u8g2.setCursor(65, 30);
+    u8g2.setCursor(65, 36);
     u8g2.print("temp:");
-    u8g2.setCursor(97, 30);
+    u8g2.setCursor(97, 36);
     u8g2.print(bme.readTemperature());
     Serial.println("Temp:");
     Serial.println(bme.readTemperature());
-    u8g2.setCursor(65, 45);
+    /*
+    u8g2.setCursor(65, 48);
     u8g2.print("pres:");
-    u8g2.setCursor(93, 45);
+    u8g2.setCursor(93, 48);
     u8g2.print(bme.readPressure() / 100.0F);
     Serial.println("Pressure:");
     Serial.println(bme.readPressure() / 100.0F);
-    u8g2.setCursor(65, 60);
+    */
+    u8g2.setCursor(65, 51);
     u8g2.print("hum:");
-    u8g2.setCursor(95, 60);
+    u8g2.setCursor(95, 51);
     u8g2.print(bme.readHumidity());
     Serial.println("Humidity:");
     Serial.println(bme.readHumidity());
