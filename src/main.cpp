@@ -30,6 +30,13 @@ Adafruit_CCS811 ccs;
 Adafruit_BME280 bme;
 
 
+void drawHorizontalBar(int x, int y, int width, int height, int value, int maxValue) {
+  int filledWidth = map(value, 0, maxValue, 0, width); // Map value to bar width
+  u8g2.drawRFrame(x, y, width, height,4); // Draw border
+  u8g2.drawRBox(x, y, filledWidth, height,4); // Fill bar
+}
+
+
 void setup() {
   // put your setup code here, to run once:
   delay(2500);
@@ -92,28 +99,52 @@ void loop() {
     hum = bme.readHumidity();
     
 
-    // left column
-    u8g2.setCursor(3, 36);
-    u8g2.print("CO2:");
-    u8g2.setCursor(35, 36);
-    u8g2.print(ccs.geteCO2());
+    // Serial outputs for debug - (is screen bugged or is read) 
+    Serial.println("Temp:");
+    Serial.println(bme.readTemperature());
+    Serial.println("Humidity:");
+    Serial.println(bme.readHumidity());
     Serial.println("CO2: ");
     Serial.println(ccs.geteCO2());
-    u8g2.setCursor(3, 51);
-    u8g2.print("tvoc:");
-    u8g2.setCursor(40, 51);
-    u8g2.print(ccs.getTVOC());
     Serial.println("TVOC: ");
     Serial.println(ccs.getTVOC());
 
+    // small font for status bars
+    u8g2.setFont(u8g2_font_squeezed_r6_tr);
+
+    // temperature bar
+    // temp ranges from 0 to 50
+    u8g2.setCursor(23, 33);
+    u8g2.print("temp.");
+    drawHorizontalBar(5, 36, 55, 10, bme.readTemperature(), 50); 
+
+
+    // humidity bar
+    // Humidity out of 100%
+    u8g2.setCursor(90, 33);
+    u8g2.print("hum.");
+    drawHorizontalBar(68, 36, 55, 10, bme.readHumidity(), 100); 
+
+    
+    // larger font for text info
+    u8g2.setFont(u8g2_font_ncenB08_tr);
+
+    // bottom row - text values
+    u8g2.setCursor(10, 60);
+    u8g2.print("CO2:");
+    u8g2.setCursor(38, 60);
+    u8g2.print(ccs.geteCO2());
+    u8g2.setCursor(78, 60);
+    u8g2.print("tvoc:");
+    u8g2.setCursor(110, 60);
+    u8g2.print(ccs.getTVOC());
+
     // right column
+    /*
     u8g2.setCursor(65, 36);
     u8g2.print("temp:");
     u8g2.setCursor(97, 36);
     u8g2.print(bme.readTemperature());
-    Serial.println("Temp:");
-    Serial.println(bme.readTemperature());
-    /*
     u8g2.setCursor(65, 48);
     u8g2.print("pres:");
     u8g2.setCursor(93, 48);
@@ -121,12 +152,13 @@ void loop() {
     Serial.println("Pressure:");
     Serial.println(bme.readPressure() / 100.0F);
     */
-    u8g2.setCursor(65, 51);
-    u8g2.print("hum:");
-    u8g2.setCursor(95, 51);
-    u8g2.print(bme.readHumidity());
-    Serial.println("Humidity:");
-    Serial.println(bme.readHumidity());
+    
+
+    
+    //u8g2.setCursor(65, 51);
+    //u8g2.print("hum:");
+    //u8g2.setCursor(95, 51);
+    //u8g2.print(bme.readHumidity());
 
   } while ( u8g2.nextPage() );
     delay(100);
