@@ -109,26 +109,29 @@ void loop() {
     Serial.println("TVOC: ");
     Serial.println(ccs.getTVOC());
 
-    // small font for status bars
-    u8g2.setFont(u8g2_font_squeezed_r6_tr);
-
-    // temperature bar
-    // temp ranges from 0 to 50
-    u8g2.setCursor(23, 33);
-    u8g2.print("temp.");
-    drawHorizontalBar(5, 36, 55, 10, bme.readTemperature(), 50); 
+    // u8g2.setFont(u8g2_font_squeezed_r6_tr);
+    u8g2.setFont(u8g2_font_ncenB10_tr);
+    u8g2.setCursor(18, 39);
+    int temp = round(bme.readTemperature());
+    u8g2.print(temp);
+    u8g2.drawCircle(38, 31, 3, U8G2_DRAW_ALL);
+    u8g2.setCursor(43, 39);
+    u8g2.print("C");
+    
+    u8g2.setFont(u8g2_font_ncenB08_tr);
 
 
     // humidity bar
     // Humidity out of 100%
     u8g2.setCursor(90, 33);
-    u8g2.print("hum.");
-    drawHorizontalBar(68, 36, 55, 10, bme.readHumidity(), 100); 
+    drawHorizontalBar(68, 28, 50, 12, bme.readHumidity(), 100); 
+    
+    //u8g2.print(bme.readHumidity());
+    //u8g2.drawStr(90,33,"hum%");
 
     
     // larger font for text info
-    u8g2.setFont(u8g2_font_ncenB08_tr);
-
+    
     // bottom row - text values
     u8g2.setCursor(10, 60);
     u8g2.print("CO2:");
